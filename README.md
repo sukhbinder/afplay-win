@@ -7,6 +7,7 @@
 
 Tiny utility that mimics 'afplay' in windows
 
+For a background on this [please read this post](https://sukhbinder.wordpress.com/2024/12/13/introducing-afplay-win/)
 
 ## Installation
 
