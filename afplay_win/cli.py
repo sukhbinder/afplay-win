@@ -1,12 +1,13 @@
-
 import argparse
 import uuid
 import ctypes
 import logging
 import signal
+import os
 
 
 logger = logging.getLogger(__name__)
+
 
 def _send_winmm_mci_command(command):
     winmm = ctypes.WinDLL("winmm.dll")
@@ -29,10 +30,14 @@ def _playsound_mci_winmm(sound: str) -> None:
     logger.debug("winmm: finishing play %s", sound)
 
 
-
 def create_parser():
     parser = argparse.ArgumentParser(description="afplay for windows using python")
-    parser.add_argument("sound", type=str, help="Path to .mp3 or .wav file")
+    parser.add_argument(
+        "sound",
+        type=str,
+        nargs="?",
+        help="Path to .mp3 or .wav file (or pipe the path)",
+    )
     return parser
 
 
@@ -40,6 +45,25 @@ def cli():
     "afplay for windows using python"
     parser = create_parser()
     args = parser.parse_args()
+    sound = args.sound
+
+    # If no argument and something piped in
+    if sound is None and not sys.stdin.isatty():
+        piped = sys.stdin.read().strip()
+        if piped:
+            sound = piped
+
+    # If still nothing, show error like normal argparse would
+    if not sound:
+        parser.error("No input sound file provided. Pass a file or pipe a name.")
+
+    # Validate extension
+    if not (sound.lower().endswith(".mp3") or sound.lower().endswith(".wav")):
+        parser.error("Only .mp3 or .wav files supported.")
+
+    # Validate exists
+    if not os.path.exists(sound):
+        parser.error(f"File not found: {sound}")
     mainrun(args.sound)
 
 

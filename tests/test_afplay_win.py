@@ -10,6 +10,6 @@ def test_create_parser():
 def test_mainrun(monkeypatch):
     def mockret(*args, **kwargs):
         return 0
+
     monkeypatch.setattr(cli, "_playsound_mci_winmm", mockret)
     cli.mainrun("test.mp3")
- 
