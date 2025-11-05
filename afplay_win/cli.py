@@ -4,7 +4,8 @@ import ctypes
 import logging
 import signal
 import os
-
+import sys
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -58,13 +59,13 @@ def cli():
         parser.error("No input sound file provided. Pass a file or pipe a name.")
 
     # Validate extension
-    if not (sound.lower().endswith(".mp3") or sound.lower().endswith(".wav")):
+    if not (Path(sound).match("*.mp3") or Path(sound).match("*.wav")):
         parser.error("Only .mp3 or .wav files supported.")
 
     # Validate exists
     if not os.path.exists(sound):
         parser.error(f"File not found: {sound}")
-    mainrun(args.sound)
+    mainrun(sound)
 
 
 def mainrun(soundfile):
