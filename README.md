@@ -25,6 +25,29 @@ You can also use:
 ```bash
 python -m afplay --help
 ```
+
+### Seek Functionality
+
+You can start playback from a specific time position using the `--seek` or `-t` option:
+
+```bash
+# Play from 30 seconds into the file
+afplay song.mp3 --seek 30
+afplay song.mp3 -t 30
+
+# Play from 1 minute 30 seconds into the file
+afplay song.mp3 --seek 1:30
+afplay song.mp3 -t 1:30
+
+# Play from 1 hour 10 minutes 30 seconds into the file
+afplay song.mp3 --seek 1:10:30
+afplay song.mp3 -t 1:10:30
+```
+
+Supported time formats:
+- `SS`: seconds (e.g., `30`)
+- `MM:SS`: minutes:seconds (e.g., `1:30`)
+- `HH:MM:SS`: hours:minutes:seconds (e.g., `1:10:30`)
 ## Development
 
 To contribute to this tool, first checkout the code. Then create a new virtual environment:
